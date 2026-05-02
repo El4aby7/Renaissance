@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Details - Renaissance Hotel</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700;900&family=Epilogue:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" />
+
+    <style>
+        body { font-family: 'Epilogue', sans-serif; background-color: #f9f9f9; }
+        .noto-serif { font-family: 'Noto Serif', serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+        /* Hide scrollbar for gallery */
+        .gallery-scroll::-webkit-scrollbar { display: none; }
+        .gallery-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#735c00",
+                        "surface-variant": "#e2e2e2",
+                        "outline-variant": "#d0c6ad",
+                        "surface": "#f9f9f9",
+                        "on-surface": "#1a1c1c",
+                        "secondary": "#5f5e5e"
+                    },
+                    fontFamily: {
+                        "body-md": ["Epilogue"],
+                        "body-lg": ["Epilogue"],
+                        "headline-lg": ["Noto Serif"],
+                        "h2": ["Noto Serif"],
+                        "label-caps": ["Epilogue"],
+                        "display-xl": ["Noto Serif"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface">
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-zinc-200/20 flex justify-between items-center w-full px-16 py-6 mx-auto">
+    <div class="text-2xl font-bold tracking-tighter text-zinc-900 dark:text-zinc-50 noto-serif">RENAISSANCE</div>
+    <div class="hidden md:flex items-center space-x-12">
+        <a class="text-zinc-500 hover:text-zinc-900 transition-colors noto-serif tracking-tight" href="index.html">The Hotel</a>
+        <a class="text-[#D2AA00] font-medium border-b border-[#D2AA00] pb-1 noto-serif tracking-tight" href="booking.html">Rooms</a>
+        <a class="text-zinc-500 hover:text-zinc-900 transition-colors noto-serif tracking-tight" href="about.html">About</a>
+        <a class="text-zinc-500 hover:text-zinc-900 transition-colors noto-serif tracking-tight" href="contact.html">Contact</a>
+    </div>
+    <a class="px-8 py-3 bg-zinc-900 text-white font-label-caps uppercase hover:bg-primary transition-all duration-300 scale-100 active:scale-95 inline-block text-center" href="booking.html">Book Now</a>
+</nav>
+
+<main class="pt-40 pb-32 min-h-screen max-w-[1440px] mx-auto px-6 md:px-16">
+    <div id="room-content" class="hidden">
+        <div class="mb-12">
+            <a href="booking.html" class="font-label-caps text-secondary text-[10px] uppercase tracking-widest flex items-center gap-2 hover:text-zinc-900 transition-colors mb-8 w-fit"><span class="material-symbols-outlined text-sm">arrow_back</span> Back to Collection</a>
+            <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-8">
+                <div>
+                    <span id="room-type-badge" class="font-label-caps text-primary mb-4 block uppercase tracking-widest">Type</span>
+                    <h1 id="room-title" class="font-display-xl text-on-surface text-5xl md:text-[80px]">Room Title</h1>
+                </div>
+                <div class="flex flex-col items-start md:items-end">
+                    <span class="font-label-caps text-secondary text-xs uppercase tracking-widest block mb-2">Starting From</span>
+                    <div class="font-body-md text-zinc-900 font-bold text-3xl mb-4">€<span id="room-price">0</span> <span class="text-sm text-zinc-400 font-normal uppercase">/ night</span></div>
+                    <a id="book-btn" href="#" class="px-10 py-4 bg-zinc-900 text-white font-label-caps uppercase hover:bg-primary transition-colors text-center w-full md:w-auto">Reserve This Room</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Section -->
+        <div class="mb-16">
+            <!-- Main Featured Image -->
+            <div class="aspect-video w-full overflow-hidden bg-zinc-100 border border-zinc-200 mb-4">
+                <img id="main-image" src="" alt="Main Room Image" class="w-full h-full object-cover">
+            </div>
+            <!-- Thumbnails List -->
+            <div id="gallery-thumbnails" class="flex gap-4 overflow-x-auto gallery-scroll pb-4">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+
+        <!-- Description & Amenities -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+            <div class="md:col-span-8">
+                <h3 class="font-h2 text-3xl mb-8">The Experience</h3>
+                <p id="room-description" class="font-body-lg text-secondary leading-relaxed whitespace-pre-wrap">Description here</p>
+            </div>
+            <div class="md:col-span-4 bg-white border border-zinc-200 p-8">
+                <h4 class="font-label-caps text-primary mb-6 block uppercase tracking-widest">Details</h4>
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 border-b border-zinc-100 pb-4">
+                        <span class="material-symbols-outlined text-secondary">group</span>
+                        <div>
+                            <p class="font-label-caps text-[10px] text-zinc-400 uppercase">Capacity</p>
+                            <p class="font-body-md text-zinc-900 font-medium">Up to <span id="room-capacity"></span> Guests</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 border-b border-zinc-100 pb-4">
+                        <span class="material-symbols-outlined text-secondary">wifi</span>
+                        <div>
+                            <p class="font-label-caps text-[10px] text-zinc-400 uppercase">Connectivity</p>
+                            <p class="font-body-md text-zinc-900 font-medium">High-Speed Wi-Fi</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 pb-2">
+                        <span class="material-symbols-outlined text-secondary">room_service</span>
+                        <div>
+                            <p class="font-label-caps text-[10px] text-zinc-400 uppercase">Services</p>
+                            <p class="font-body-md text-zinc-900 font-medium">24/7 Concierge</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-state" class="hidden text-center py-32">
+        <h2 class="font-h2 text-3xl mb-4">Room Not Found</h2>
+        <p class="text-zinc-500 mb-8">The room you are looking for does not exist or has been removed.</p>
+        <a href="booking.html" class="px-8 py-3 border border-zinc-900 font-label-caps uppercase hover:bg-zinc-900 hover:text-white transition-colors">Return to Collection</a>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loading-state" class="text-center py-32">
+        <p class="text-zinc-500 animate-pulse font-label-caps uppercase tracking-widest">Preparing the space...</p>
+    </div>
+</main>
+
+<footer class="bg-zinc-900 py-24 px-16">
+    <div class="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
+        <div>
+            <span class="text-3xl font-black text-white mb-8 block noto-serif">RENAISSANCE</span>
+            <p class="text-zinc-400 font-body-md max-w-sm mb-12">A curated collection of spatial experiences designed for those who seek the extraordinary in every moment.</p>
+        </div>
+        <div class="grid grid-cols-2 gap-8">
+            <div class="space-y-4">
+                <p class="font-label-caps text-primary mb-6">Explore</p>
+                <a class="block text-zinc-400 hover:text-white transition-colors font-label-caps text-sm tracking-widest uppercase" href="index.html">The Hotel</a>
+                <a class="block text-zinc-400 hover:text-white transition-colors font-label-caps text-sm tracking-widest uppercase" href="booking.html">Rooms</a>
+            </div>
+            <div class="space-y-4">
+                <p class="font-label-caps text-primary mb-6">Connect</p>
+                <a class="block text-zinc-400 hover:text-white transition-colors font-label-caps text-sm tracking-widest uppercase" href="contact.html">Contact</a>
+                <a class="block text-zinc-400 hover:text-white transition-colors font-label-caps text-sm tracking-widest uppercase" href="about.html">About Us</a>
+            </div>
+        </div>
+    </div>
+    <div class="max-w-[1440px] mx-auto mt-24 pt-12 border-t border-zinc-800 flex justify-between items-center">
+        <p class="text-zinc-500 font-label-caps text-xs tracking-widest uppercase">© 2024 RENAISSANCE HOTEL.</p>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        initSupabase();
+        
+        const params = new URLSearchParams(window.location.search);
+        const roomId = params.get('id');
+
+        if (!roomId || !window.supabaseClient) {
+            showError();
+            return;
+        }
+
+        const { data: room, error } = await window.supabaseClient.from('rooms').select('*').eq('id', roomId).single();
+
+        if (error || !room) {
+            showError();
+            return;
+        }
+
+        renderRoom(room);
+    });
+
+    function showError() {
+        document.getElementById('loading-state').classList.add('hidden');
+        document.getElementById('error-state').classList.remove('hidden');
+    }
+
+    function renderRoom(room) {
+        document.getElementById('loading-state').classList.add('hidden');
+        document.getElementById('room-content').classList.remove('hidden');
+
+        document.title = `${room.title} - Renaissance Hotel`;
+        
+        document.getElementById('room-title').textContent = room.title;
+        document.getElementById('room-type-badge').textContent = room.room_type;
+        document.getElementById('room-price').textContent = room.price;
+        document.getElementById('room-capacity').textContent = room.capacity;
+        document.getElementById('room-description').textContent = room.description || "No description provided.";
+        document.getElementById('book-btn').href = `book.html?id=${room.id}`;
+
+        // Gallery Setup
+        const mainImage = document.getElementById('main-image');
+        mainImage.src = room.thumbnail || 'https://via.placeholder.com/1200x800';
+
+        const allImages = [];
+        if (room.thumbnail) allImages.push(room.thumbnail);
+        if (room.images && Array.isArray(room.images)) {
+            room.images.forEach(img => {
+                if(img && img !== room.thumbnail) allImages.push(img);
+            });
+        }
+
+        const thumbnailsContainer = document.getElementById('gallery-thumbnails');
+        if (allImages.length > 1) {
+            thumbnailsContainer.innerHTML = allImages.map(img => `
+                <div class="flex-shrink-0 w-32 aspect-video overflow-hidden border border-zinc-200 cursor-pointer hover:opacity-80 transition-opacity" onclick="setMainImage('${img}')">
+                    <img src="${img}" class="w-full h-full object-cover">
+                </div>
+            `).join('');
+        }
+    }
+
+    function setMainImage(url) {
+        document.getElementById('main-image').src = url;
+    }
+</script>
+</body>
+</html>

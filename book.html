@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Reservation - Renaissance Hotel</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700;900&family=Epilogue:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" />
+
+    <style>
+        body { font-family: 'Epilogue', sans-serif; background-color: #f9f9f9; }
+        .noto-serif { font-family: 'Noto Serif', serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+    </style>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#735c00",
+                        "surface-variant": "#e2e2e2",
+                        "outline-variant": "#d0c6ad",
+                        "surface": "#f9f9f9",
+                        "on-surface": "#1a1c1c",
+                        "secondary": "#5f5e5e"
+                    },
+                    fontFamily: {
+                        "body-md": ["Epilogue"],
+                        "body-lg": ["Epilogue"],
+                        "headline-lg": ["Noto Serif"],
+                        "h2": ["Noto Serif"],
+                        "label-caps": ["Epilogue"],
+                        "display-xl": ["Noto Serif"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface">
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-zinc-200/20 flex justify-between items-center w-full px-16 py-6 mx-auto">
+    <div class="text-2xl font-bold tracking-tighter text-zinc-900 dark:text-zinc-50 noto-serif">RENAISSANCE</div>
+    <div class="hidden md:flex items-center space-x-12">
+        <a class="text-zinc-500 hover:text-zinc-900 transition-colors noto-serif tracking-tight" href="index.html">The Hotel</a>
+        <a class="text-[#D2AA00] font-medium border-b border-[#D2AA00] pb-1 noto-serif tracking-tight" href="booking.html">Rooms</a>
+        <a class="text-zinc-500 hover:text-zinc-900 transition-colors noto-serif tracking-tight" href="about.html">About</a>
+        <a class="text-zinc-500 hover:text-zinc-900 transition-colors noto-serif tracking-tight" href="contact.html">Contact</a>
+    </div>
+    <a class="px-8 py-3 bg-zinc-900 text-white font-label-caps uppercase hover:bg-primary transition-all duration-300 scale-100 active:scale-95 inline-block text-center" href="booking.html">Book Now</a>
+</nav>
+
+<main class="pt-40 pb-32 min-h-screen max-w-[1440px] mx-auto px-6 md:px-16">
+    <div id="booking-container" class="hidden grid-cols-1 lg:grid-cols-12 gap-16">
+        <!-- Form Section -->
+        <div class="lg:col-span-8">
+            <span class="font-label-caps text-primary mb-4 block uppercase tracking-widest">Final Step</span>
+            <h1 class="font-display-xl text-on-surface mb-12 text-5xl md:text-[64px]">Secure Your Stay.</h1>
+            
+            <form id="checkout-form" class="space-y-12 bg-white border border-outline-variant p-8 md:p-12 shadow-sm">
+                
+                <input type="hidden" id="room_id" name="room_id">
+
+                <div>
+                    <h3 class="font-h2 text-2xl mb-6">Your Dates</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="relative group">
+                            <label class="font-label-caps text-secondary mb-2 block uppercase text-xs">Check-in Date</label>
+                            <input class="w-full bg-transparent border-0 border-b border-zinc-300 py-4 focus:ring-0 focus:border-zinc-900 transition-colors text-body-lg font-body-lg" id="check_in" name="check_in" type="date" required/>
+                        </div>
+                        <div class="relative group">
+                            <label class="font-label-caps text-secondary mb-2 block uppercase text-xs">Check-out Date</label>
+                            <input class="w-full bg-transparent border-0 border-b border-zinc-300 py-4 focus:ring-0 focus:border-zinc-900 transition-colors text-body-lg font-body-lg" id="check_out" name="check_out" type="date" required/>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-h2 text-2xl mb-6">Your Details</h3>
+                    <div class="space-y-8">
+                        <div class="relative group">
+                            <label class="font-label-caps text-secondary mb-2 block uppercase text-xs">Full Name</label>
+                            <input class="w-full bg-transparent border-0 border-b border-zinc-300 py-4 focus:ring-0 focus:border-zinc-900 transition-colors text-body-lg font-body-lg" id="guest_name" name="guest_name" placeholder="E.g. Jane Doe" type="text" required/>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="relative group">
+                                <label class="font-label-caps text-secondary mb-2 block uppercase text-xs">Email Address</label>
+                                <input class="w-full bg-transparent border-0 border-b border-zinc-300 py-4 focus:ring-0 focus:border-zinc-900 transition-colors text-body-lg font-body-lg" id="guest_email" name="guest_email" placeholder="jane@example.com" type="email" required/>
+                            </div>
+                            <div class="relative group">
+                                <label class="font-label-caps text-secondary mb-2 block uppercase text-xs">Number of Guests</label>
+                                <select class="w-full bg-transparent border-0 border-b border-zinc-300 py-4 focus:ring-0 focus:border-zinc-900 transition-colors text-body-lg font-body-lg appearance-none" id="guests" name="guests" required>
+                                    <option value="1">1 Guest</option>
+                                    <option value="2">2 Guests</option>
+                                    <option value="3">3 Guests</option>
+                                    <option value="4">4 Guests</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-h2 text-2xl mb-6">Special Requests</h3>
+                    <div class="relative group">
+                        <label class="font-label-caps text-secondary mb-2 block uppercase text-xs">Optional</label>
+                        <textarea class="w-full bg-transparent border-0 border-b border-zinc-300 py-4 focus:ring-0 focus:border-zinc-900 transition-colors text-body-lg font-body-lg" id="special_requests" name="special_requests" placeholder="Any special requests or dietary requirements..." rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div id="form-feedback" class="hidden font-label-caps py-4 text-center border"></div>
+
+                <button type="submit" id="submit-btn" class="w-full py-6 bg-zinc-900 text-white font-label-caps text-sm uppercase hover:bg-primary transition-all duration-300 tracking-widest mt-8">Confirm Reservation</button>
+            </form>
+        </div>
+
+        <!-- Order Summary Section -->
+        <div class="lg:col-span-4">
+            <div class="bg-zinc-100 p-8 sticky top-32">
+                <h3 class="font-label-caps text-primary mb-8 block uppercase tracking-widest">Reservation Summary</h3>
+                <div class="aspect-video w-full overflow-hidden bg-zinc-200 mb-6">
+                    <img id="summary-img" src="" alt="Room" class="w-full h-full object-cover">
+                </div>
+                <h4 id="summary-title" class="font-h2 text-2xl mb-2 font-bold">Room Title</h4>
+                <p id="summary-type" class="text-zinc-500 font-label-caps text-xs uppercase mb-6 tracking-widest">Room Type</p>
+                
+                <div class="border-t border-zinc-300 pt-6 space-y-4">
+                    <div class="flex justify-between font-body-md text-zinc-600">
+                        <span>Price per night</span>
+                        <span>€<span id="summary-price">0</span></span>
+                    </div>
+                    <div class="flex justify-between font-body-md text-zinc-600">
+                        <span>Taxes & Fees</span>
+                        <span>Included</span>
+                    </div>
+                </div>
+                
+                <div class="border-t border-zinc-300 pt-6 mt-6 flex justify-between items-end">
+                    <span class="font-label-caps text-zinc-900 uppercase">Total (Per Night)</span>
+                    <span class="font-body-md font-bold text-2xl text-zinc-900">€<span id="summary-total">0</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success State -->
+    <div id="success-state" class="hidden text-center py-32 max-w-2xl mx-auto">
+        <span class="material-symbols-outlined text-6xl text-primary mb-6">check_circle</span>
+        <h2 class="font-h2 text-4xl mb-4">Reservation Confirmed</h2>
+        <p class="text-zinc-600 mb-8 font-body-lg">Thank you for choosing Renaissance Hotel. Your reservation has been received and is being processed.</p>
+        <div class="bg-white border border-outline-variant p-8 mb-12 shadow-sm text-left">
+            <p class="font-label-caps text-secondary mb-2 uppercase text-xs">Confirmation Number</p>
+            <p id="confirmation-number" class="font-body-md font-bold text-2xl text-zinc-900 tracking-widest"></p>
+        </div>
+        <a href="index.html" class="px-10 py-4 bg-zinc-900 text-white font-label-caps uppercase hover:bg-primary transition-colors text-center inline-block">Return to Home</a>
+    </div>
+
+    <!-- Error/Loading State -->
+    <div id="loading-state" class="text-center py-32">
+        <p class="text-zinc-500 animate-pulse font-label-caps uppercase tracking-widest" id="loading-text">Preparing checkout...</p>
+    </div>
+</main>
+
+<footer class="bg-zinc-900 py-24 px-16">
+    <div class="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
+        <div>
+            <span class="text-3xl font-black text-white mb-8 block noto-serif">RENAISSANCE</span>
+            <p class="text-zinc-400 font-body-md max-w-sm mb-12">A curated collection of spatial experiences designed for those who seek the extraordinary in every moment.</p>
+        </div>
+        <div class="grid grid-cols-2 gap-8">
+            <div class="space-y-4">
+                <p class="font-label-caps text-primary mb-6">Explore</p>
+                <a class="block text-zinc-400 hover:text-white transition-colors font-label-caps text-sm tracking-widest uppercase" href="index.html">The Hotel</a>
+                <a class="block text-zinc-400 hover:text-white transition-colors font-label-caps text-sm tracking-widest uppercase" href="booking.html">Rooms</a>
+            </div>
+            <div class="space-y-4">
+                <p class="font-label-caps text-primary mb-6">Connect</p>
+                <a class="block text-zinc-400 hover:text-white transition-colors font-label-caps text-sm tracking-widest uppercase" href="contact.html">Contact</a>
+                <a class="block text-zinc-400 hover:text-white transition-colors font-label-caps text-sm tracking-widest uppercase" href="about.html">About Us</a>
+            </div>
+        </div>
+    </div>
+    <div class="max-w-[1440px] mx-auto mt-24 pt-12 border-t border-zinc-800 flex justify-between items-center">
+        <p class="text-zinc-500 font-label-caps text-xs tracking-widest uppercase">© 2024 RENAISSANCE HOTEL.</p>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        initSupabase();
+        
+        const params = new URLSearchParams(window.location.search);
+        const roomId = params.get('id');
+
+        if (!roomId || !window.supabaseClient) {
+            document.getElementById('loading-text').textContent = "Invalid Request or Database Error.";
+            document.getElementById('loading-text').classList.remove('animate-pulse');
+            return;
+        }
+
+        const { data: room, error } = await window.supabaseClient.from('rooms').select('*').eq('id', roomId).single();
+
+        if (error || !room) {
+            document.getElementById('loading-text').textContent = "Room not found.";
+            document.getElementById('loading-text').classList.remove('animate-pulse');
+            return;
+        }
+
+        // Setup Form Data
+        document.getElementById('room_id').value = room.id;
+        
+        // Setup Summary
+        document.getElementById('summary-title').textContent = room.title;
+        document.getElementById('summary-type').textContent = room.room_type;
+        document.getElementById('summary-price').textContent = room.price;
+        document.getElementById('summary-total').textContent = room.price;
+        document.getElementById('summary-img').src = room.thumbnail || 'https://via.placeholder.com/800x600';
+
+        // Set min dates
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('check_in').min = today;
+        document.getElementById('check_out').min = today;
+
+        document.getElementById('check_in').addEventListener('change', function() {
+            document.getElementById('check_out').min = this.value;
+            if(document.getElementById('check_out').value < this.value) {
+                document.getElementById('check_out').value = this.value;
+            }
+        });
+
+        document.getElementById('loading-state').classList.add('hidden');
+        document.getElementById('booking-container').classList.remove('hidden');
+        document.getElementById('booking-container').classList.add('grid');
+    });
+
+    document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const form = e.target;
+        const submitBtn = document.getElementById('submit-btn');
+        const feedback = document.getElementById('form-feedback');
+        
+        const checkIn = document.getElementById('check_in').value;
+        const checkOut = document.getElementById('check_out').value;
+        
+        if (new Date(checkIn) >= new Date(checkOut)) {
+            feedback.textContent = "Check-out date must be after check-in date.";
+            feedback.className = "font-label-caps py-4 text-center border border-red-200 bg-red-50 text-red-600 block";
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Processing...";
+        feedback.classList.add('hidden');
+
+        // Generate Confirmation Number (e.g., REN-ABCD123)
+        const confirmationNumber = 'REN-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        data.status = 'PENDING';
+        data.confirmation_number = confirmationNumber;
+        data.created_at = new Date().toISOString();
+
+        const { error } = await submitToSupabase('bookings', data);
+
+        if (error) {
+            feedback.textContent = "Error: " + error.message;
+            feedback.className = "font-label-caps py-4 text-center border border-red-200 bg-red-50 text-red-600 block";
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Confirm Reservation";
+        } else {
+            document.getElementById('booking-container').classList.add('hidden');
+            document.getElementById('booking-container').classList.remove('grid');
+            document.getElementById('success-state').classList.remove('hidden');
+            document.getElementById('confirmation-number').textContent = confirmationNumber;
+        }
+    });
+</script>
+</body>
+</html>

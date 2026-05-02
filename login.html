@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Renaissance Hotel</title>
+    
+    <!-- EXTERNAL LIBRARIES -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- PROJECT CONFIGURATION -->
+    <script src="config.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" />
+
+    <style>
+        body {
+            font-family: 'Epilogue', sans-serif;
+            background-color: #f9f9f9;
+        }
+        .noto-serif {
+            font-family: 'Noto Serif', serif;
+        }
+        /* Hide scrollbar */
+        ::-webkit-scrollbar { display: none; }
+        * { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+    
+    <script id="tailwind-config">
+        tailwind.config = {a
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#735c00",
+                        "surface-variant": "#e2e2e2",
+                        "outline-variant": "#d0c6ad",
+                        "surface": "#f9f9f9",
+                        "on-surface": "#1a1c1c",
+                    },
+                    fontFamily: {
+                        "body-md": ["Epilogue"],
+                        "headline-lg": ["Noto Serif"],
+                        "label-caps": ["Epilogue"],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface h-screen flex flex-col items-center justify-center relative overflow-hidden">
+    
+    <!-- Background Accents -->
+    <div class="absolute inset-0 z-0 opacity-10 pointer-events-none mix-blend-multiply bg-[#D2AA00]"></div>
+    <div class="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white to-transparent z-0"></div>
+
+    <div class="relative z-10 w-full max-w-md px-8 py-12 bg-white shadow-2xl border border-surface-variant">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold tracking-tighter text-zinc-900 font-['Noto_Serif'] mb-2">RENAISSANCE</h1>
+            <p class="text-xs tracking-[0.25em] text-zinc-500 uppercase font-['Epilogue']">Admin Portal</p>
+        </div>
+
+        <form id="login-form" class="space-y-8">
+            <div class="relative group">
+                <label class="text-[10px] font-semibold tracking-widest text-zinc-500 block mb-2 uppercase">Email Address</label>
+                <input type="email" id="email" name="email" required 
+                       class="w-full bg-transparent border-b border-outline-variant py-3 text-lg focus:outline-none focus:border-primary transition-colors placeholder:text-surface-variant" 
+                       placeholder="admin@renaissance.com">
+            </div>
+            
+            <div class="relative group">
+                <label class="text-[10px] font-semibold tracking-widest text-zinc-500 block mb-2 uppercase">Password</label>
+                <input type="password" id="password" name="password" required 
+                       class="w-full bg-transparent border-b border-outline-variant py-3 text-lg focus:outline-none focus:border-primary transition-colors placeholder:text-surface-variant" 
+                       placeholder="••••••••">
+            </div>
+
+            <button type="submit" id="submit-btn"
+                    class="w-full py-4 bg-zinc-900 text-white text-[11px] tracking-[0.25em] font-semibold uppercase hover:bg-primary transition-all duration-300 flex items-center justify-center gap-3 mt-4">
+                AUTHENTICATE
+                <span class="material-symbols-outlined text-sm">login</span>
+            </button>
+            
+            <p id="error-message" class="text-red-600 text-sm text-center hidden mt-4"></p>
+        </form>
+
+        <div class="mt-12 text-center">
+            <a href="index.html" class="text-[10px] tracking-widest text-zinc-400 hover:text-zinc-800 transition-colors uppercase flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-xs">arrow_back</span>
+                Return to Site
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initSupabase();
+
+            // If already logged in, redirect to admin
+            if (window.supabaseClient) {
+                window.supabaseClient.auth.getSession().then(({ data: { session } }) => {
+                    if (session) {
+                        window.location.href = 'admin.html';
+                    }
+                });
+            }
+
+            const form = document.getElementById('login-form');
+            const errorMsg = document.getElementById('error-message');
+            const submitBtn = document.getElementById('submit-btn');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                errorMsg.classList.add('hidden');
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                if (!window.supabaseClient) {
+                    errorMsg.textContent = "System Error: Database not initialized.";
+                    errorMsg.classList.remove('hidden');
+                    return;
+                }
+
+                submitBtn.innerHTML = `AUTHENTICATING... <span class="material-symbols-outlined animate-spin text-sm">sync</span>`;
+                submitBtn.disabled = true;
+
+                const { data, error } = await window.supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                });
+
+                if (error) {
+                    errorMsg.textContent = error.message;
+                    errorMsg.classList.remove('hidden');
+                    submitBtn.innerHTML = `AUTHENTICATE <span class="material-symbols-outlined text-sm">login</span>`;
+                    submitBtn.disabled = false;
+                } else {
+                    // Success, redirect to admin
+                    window.location.href = 'admin.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

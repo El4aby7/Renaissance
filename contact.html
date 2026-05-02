@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<!-- 
+    RENAISSANCE HOTEL - CONTACT PAGE
+    Design Aesthetic: Editorial Gallery (High Contrast, Sharp Corners, Minimalist)
+    Core Technologies: Tailwind CSS, Supabase JS
+-->
+<meta charset="utf-8"/>
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<!-- EXTERNAL LIBRARIES -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- PROJECT CONFIGURATION -->
+<script src="config.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700&amp;family=Epilogue:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- CUSTOM OVERRIDE STYLES -->
+<style>
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Epilogue', sans-serif;
+            background-color: #f9f9f9;
+        }
+        .noto-serif {
+            font-family: 'Noto Serif', serif;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#e8e8e8",
+                        "secondary": "#5f5e5e",
+                        "surface-container": "#eeeeee",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#e2e2e2",
+                        "on-tertiary-fixed-variant": "#49473f",
+                        "on-tertiary-container": "#44423b",
+                        "on-primary-fixed-variant": "#574500",
+                        "primary-container": "#d2aa00",
+                        "inverse-on-surface": "#f0f1f1",
+                        "outline": "#7f7661",
+                        "surface": "#f9f9f9",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#514000",
+                        "on-background": "#1a1c1c",
+                        "primary": "#735c00",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2f3131",
+                        "on-secondary-fixed-variant": "#474746",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#e2dfde",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "inverse-primary": "#ecc229",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#615e56",
+                        "background": "#f9f9f9",
+                        "surface-container-highest": "#e2e2e2",
+                        "tertiary-container": "#b2aea5",
+                        "on-secondary-fixed": "#1b1b1b",
+                        "on-tertiary": "#ffffff",
+                        "surface-bright": "#f9f9f9",
+                        "on-tertiary-fixed": "#1d1c15",
+                        "on-secondary-container": "#636262",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#dadada",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#ecc229",
+                        "surface-container-low": "#f3f3f4",
+                        "outline-variant": "#d0c6ad",
+                        "on-primary-fixed": "#231b00",
+                        "tertiary-fixed-dim": "#cbc6bc",
+                        "primary-fixed": "#ffe084",
+                        "tertiary-fixed": "#e7e2d8",
+                        "on-surface": "#1a1c1c",
+                        "on-surface-variant": "#4d4633",
+                        "surface-tint": "#735c00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "gutter": "32px",
+                        "unit": "8px",
+                        "offset-overlap": "-48px",
+                        "margin": "64px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Epilogue"],
+                        "headline-lg": ["Noto Serif"],
+                        "headline-md": ["Noto Serif"],
+                        "body-lg": ["Epilogue"],
+                        "label-caps": ["Epilogue"],
+                        "display-xl": ["Noto Serif"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                        "display-xl": ["80px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 z-50 w-full bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-zinc-200/20 dark:border-zinc-800/20">
+<div class="flex justify-between items-center w-full px-16 py-6 mx-auto max-w-[1440px]">
+<div class="text-2xl font-bold tracking-tighter text-zinc-900 dark:text-zinc-50 font-['Noto_Serif']">RENAISSANCE</div>
+<nav class="hidden md:flex items-center space-x-12">
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors font-['Noto_Serif'] tracking-tight" href="index.html">The Hotel</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors font-['Noto_Serif'] tracking-tight" href="booking.html">Rooms</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors font-['Noto_Serif'] tracking-tight" href="index.html#experiences">Experiences</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors font-['Noto_Serif'] tracking-tight" href="about.html">About</a>
+<a class="text-[#D2AA00] font-medium border-b border-[#D2AA00] pb-1 font-['Noto_Serif'] tracking-tight" href="contact.html">Contact</a>
+</nav>
+<a class="px-8 py-3 bg-zinc-900 text-white font-label-caps text-label-caps hover:bg-zinc-800 transition-all active:scale-95 duration-200 inline-block text-center" href="booking.html">Book Now</a>
+</div>
+</header>
+<main class="pt-32 min-h-screen">
+<!-- Hero Section & Contact Info -->
+<section class="max-w-[1440px] mx-auto px-16 py-24">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-16 items-start">
+<!-- Left: Branding and Contact Info -->
+<div class="md:col-span-5 space-y-12">
+<div class="space-y-6">
+<span class="text-label-caps font-label-caps text-primary tracking-widest block">GET IN TOUCH</span>
+<h1 class="text-display-xl font-display-xl text-on-surface leading-none">A Dialogue <br/>Begins Here.</h1>
+<p class="text-body-lg font-body-lg text-secondary max-w-md">Whether you are seeking a sanctuary for a weekend or planning an editorial collaboration, our concierge is at your service.</p>
+</div>
+<div class="space-y-8 pt-12 border-t border-surface-container-highest">
+<div class="group">
+<span class="text-label-caps font-label-caps text-on-surface-variant mb-2 block">ADDRESS</span>
+<address class="not-italic text-headline-md font-headline-md text-on-surface group-hover:text-primary transition-colors">
+                                42 Avenue des Arts,<br/>75008 Paris, France
+                            </address>
+</div>
+<div class="flex flex-col md:flex-row gap-12">
+<div>
+<span class="text-label-caps font-label-caps text-on-surface-variant mb-2 block">ENQUIRIES</span>
+<a class="text-body-lg font-body-lg text-on-surface hover:text-primary transition-colors" href="tel:+33123456789">+33 1 23 45 67 89</a>
+</div>
+<div>
+<span class="text-label-caps font-label-caps text-on-surface-variant mb-2 block">EMAIL</span>
+<a class="text-body-lg font-body-lg text-on-surface hover:text-primary transition-colors" href="mailto:hello@renaissance-hotel.com">hello@renaissance-hotel.com</a>
+</div>
+</div>
+<div class="flex flex-wrap gap-6 pt-4" id="social-links-container">
+<!-- Injected dynamically -->
+</div>
+</div>
+</div>
+<!-- Right: Contact Form -->
+<div class="md:col-span-7 bg-white p-12 md:p-20 relative z-10 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.05)] border border-surface-container">
+<form class="space-y-12" id="contact-form">
+<div class="relative group">
+<label class="text-label-caps font-label-caps text-on-surface-variant block mb-2">FULL NAME</label>
+<input class="w-full bg-transparent border-b border-outline-variant py-4 text-headline-md font-headline-md focus:outline-none focus:border-primary transition-colors placeholder:text-surface-variant" id="full-name" name="full_name" placeholder="Your name" required="" type="text"/>
+</div>
+<div class="relative group">
+<label class="text-label-caps font-label-caps text-on-surface-variant block mb-2">EMAIL ADDRESS</label>
+<input class="w-full bg-transparent border-b border-outline-variant py-4 text-headline-md font-headline-md focus:outline-none focus:border-primary transition-colors placeholder:text-surface-variant" id="email" name="email" placeholder="email@example.com" required="" type="email"/>
+</div>
+<div class="relative group">
+<label class="text-label-caps font-label-caps text-on-surface-variant block mb-2">SUBJECT</label>
+<select class="w-full bg-transparent border-b border-outline-variant py-4 text-body-lg font-body-lg focus:outline-none focus:border-primary transition-colors appearance-none" id="subject" name="subject">
+<option value="reservation">Room Reservation</option>
+<option value="event">Event Booking</option>
+<option value="press">Press &amp; Media</option>
+<option value="other">Other Inquiry</option>
+</select>
+</div>
+<div class="relative group">
+<label class="text-label-caps font-label-caps text-on-surface-variant block mb-2">MESSAGE</label>
+<textarea class="w-full bg-transparent border-b border-outline-variant py-4 text-body-lg font-body-lg focus:outline-none focus:border-primary transition-colors resize-none placeholder:text-surface-variant" id="message" name="message" placeholder="Tell us about your needs..." required="" rows="4"></textarea>
+</div>
+<button class="w-full py-6 bg-zinc-900 text-white font-label-caps text-label-caps tracking-[0.25em] hover:bg-primary transition-all duration-300 flex items-center justify-center gap-4" type="submit">
+                             SEND MESSAGE
+                             <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<p class="hidden text-center font-label-caps mt-4" id="form-feedback"></p>
+</form>
+</div>
+</div>
+</section>
+<!-- Map Section -->
+<section class="w-full bg-surface-container-high relative">
+<div class="h-[600px] w-full overflow-hidden grayscale contrast-125 brightness-95" id="map-container">
+<div class="absolute inset-0 bg-[#D2AA00]/5 pointer-events-none mix-blend-multiply"></div>
+<iframe id="map-iframe" class="w-full h-full border-0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+<!-- Map Overlay Card -->
+<div class="absolute top-1/2 left-16 -translate-y-1/2 bg-zinc-900 p-12 text-white max-w-sm hidden lg:block">
+<h3 class="text-headline-md font-headline-md mb-6">Location</h3>
+<p class="text-body-md font-body-md text-zinc-400 mb-8 leading-relaxed">Nestled in the golden triangle of Paris, Renaissance stands as a beacon of art and culture, mere steps from the Champs-Élysées.</p>
+<a id="map-external-link" class="inline-flex items-center gap-2 text-label-caps font-label-caps text-primary border-b border-primary pb-1" href="https://maps.google.com/?q=Cairo+Marriott+Hotel" target="_blank">
+                    OPEN IN GOOGLE MAPS
+                    <span class="material-symbols-outlined text-sm">open_in_new</span>
+</a>
+</div>
+</section>
+<!-- Newsletter / Secondary CTA -->
+<section class="max-w-[1440px] mx-auto px-16 py-32 grid grid-cols-1 md:grid-cols-2 gap-32 items-center">
+<div>
+<h2 class="text-headline-lg font-headline-lg mb-8 leading-tight">Join the Inner Circle</h2>
+<p class="text-body-lg font-body-lg text-secondary">Receive curated updates on art exhibitions, seasonal menus, and exclusive residency opportunities.</p>
+</div>
+<form class="flex gap-4 w-full" onsubmit="event.preventDefault(); alert('Thank you for joining our inner circle. Expect an invitation shortly.'); this.reset();">
+<input class="flex-grow bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary" placeholder="Your email address" type="email" required/>
+<button type="submit" class="px-8 py-4 bg-transparent border border-outline-variant text-label-caps font-label-caps hover:bg-zinc-900 hover:text-white transition-all">SUBSCRIBE</button>
+</form>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-zinc-900 dark:bg-black full-width py-24 px-16">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-[1440px] mx-auto">
+<div>
+<span class="text-3xl font-black text-white mb-8 block font-['Noto_Serif'] tracking-tighter">RENAISSANCE</span>
+<p class="text-zinc-400 font-body-md max-w-sm mb-12 opacity-70">
+                    A destination for those who seek beauty in the unexpected and luxury in the essential.
+                </p>
+<div class="flex gap-8">
+<a class="text-zinc-400 hover:text-[#D2AA00] transition-colors duration-300" href="https://instagram.com" target="_blank">Instagram</a>
+<a class="text-zinc-400 hover:text-[#D2AA00] transition-colors duration-300" href="about.html">Journal</a>
+<a class="text-zinc-400 hover:text-[#D2AA00] transition-colors duration-300" href="booking.html">Gallery</a>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="flex flex-col gap-4">
+<span class="font-['Noto_Serif'] text-sm tracking-widest uppercase text-[#D2AA00] mb-4">Navigations</span>
+<a class="text-zinc-400 hover:text-white transition-colors" href="index.html">The Hotel</a>
+<a class="text-zinc-400 hover:text-white transition-colors" href="booking.html">Rooms</a>
+<a class="text-zinc-400 hover:text-white transition-colors" href="index.html#experiences">Experiences</a>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-['Noto_Serif'] text-sm tracking-widest uppercase text-[#D2AA00] mb-4">Legal</span>
+<a class="text-zinc-400 hover:text-white transition-colors" href="#privacy">Privacy Policy</a>
+<a class="text-zinc-400 hover:text-white transition-colors" href="#terms">Terms of Service</a>
+<a class="text-zinc-400 hover:text-white transition-colors" href="#press">Press Kit</a>
+<a class="text-zinc-400 hover:text-white transition-colors" href="#sustainability">Sustainability</a>
+</div>
+</div>
+</div>
+<div class="mt-24 pt-12 border-t border-zinc-800 w-full max-w-[1440px] mx-auto flex justify-between items-center">
+<span class="font-['Noto_Serif'] text-sm tracking-widest uppercase text-zinc-500 text-xs">© 2024 RENAISSANCE HOTEL. A CURATED GALLERY OF MOMENTS.</span>
+<div class="flex items-center gap-2 text-zinc-500 font-label-caps text-xs">
+                DESIGNED FOR THE CURIOUS
+                <span class="material-symbols-outlined text-xs">stat_0</span>
+</div>
+</div>
+</footer>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        initSupabase();
+        
+        if (window.supabaseClient) {
+            const { data: settings } = await window.supabaseClient.from('settings').select('*');
+            if (settings) {
+                const settingsMap = settings.reduce((acc, curr) => {
+                    acc[curr.key] = curr.value;
+                    return acc;
+                }, {});
+
+                if (settingsMap.map_url) {
+                    let embedUrl = settingsMap.map_url;
+                    if (embedUrl.includes('<iframe') && embedUrl.includes('src="')) {
+                        const match = embedUrl.match(/src="([^"]+)"/);
+                        if (match) {
+                            embedUrl = match[1];
+                        }
+                    }
+                    document.getElementById('map-iframe').src = embedUrl;
+                    const externalLink = document.getElementById('map-external-link');
+                    if (externalLink) {
+                        externalLink.href = embedUrl;
+                    }
+                }
+
+                const socialContainer = document.getElementById('social-links-container');
+                let socialHtml = '';
+                if (settingsMap.social_facebook) {
+                    socialHtml += `<a class="text-on-surface hover:text-primary transition-colors" href="${settingsMap.social_facebook}" target="_blank" rel="noopener"><span class="font-label-caps uppercase text-sm tracking-widest border-b border-zinc-900 pb-1">Facebook</span></a>`;
+                }
+                if (settingsMap.social_instagram) {
+                    socialHtml += `<a class="text-on-surface hover:text-primary transition-colors" href="${settingsMap.social_instagram}" target="_blank" rel="noopener"><span class="font-label-caps uppercase text-sm tracking-widest border-b border-zinc-900 pb-1">Instagram</span></a>`;
+                }
+                if (settingsMap.social_twitter) {
+                    socialHtml += `<a class="text-on-surface hover:text-primary transition-colors" href="${settingsMap.social_twitter}" target="_blank" rel="noopener"><span class="font-label-caps uppercase text-sm tracking-widest border-b border-zinc-900 pb-1">Twitter</span></a>`;
+                }
+                if(socialContainer) socialContainer.innerHTML = socialHtml;
+            }
+        }
+
+        const form = document.getElementById('contact-form');
+        const feedback = document.getElementById('form-feedback');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            feedback.classList.remove('hidden', 'text-error', 'text-primary');
+            feedback.textContent = "Sending...";
+            feedback.classList.add('block');
+            
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            data.created_at = new Date().toISOString();
+            
+            const { error } = await submitToSupabase('contact_messages', data);
+            
+            if (error) {
+                feedback.textContent = "Error: " + error.message;
+                feedback.classList.add('text-error');
+            } else {
+                feedback.textContent = "Message sent successfully!";
+                feedback.classList.add('text-primary');
+                form.reset();
+            }
+        });
+
+</script>
+</body></html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<!-- 
+    RENAISSANCE HOTEL - ABOUT PAGE
+    Design Aesthetic: Editorial Gallery (High Contrast, Sharp Corners, Minimalist)
+    Core Technologies: Tailwind CSS, Supabase JS
+-->
+<meta charset="utf-8"/>
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<!-- EXTERNAL LIBRARIES -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- PROJECT CONFIGURATION -->
+<script src="config.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700&amp;family=Epilogue:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#e8e8e8",
+                        "secondary": "#5f5e5e",
+                        "surface-container": "#eeeeee",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#e2e2e2",
+                        "on-tertiary-fixed-variant": "#49473f",
+                        "on-tertiary-container": "#44423b",
+                        "on-primary-fixed-variant": "#574500",
+                        "primary-container": "#d2aa00",
+                        "inverse-on-surface": "#f0f1f1",
+                        "outline": "#7f7661",
+                        "surface": "#f9f9f9",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#514000",
+                        "on-background": "#1a1c1c",
+                        "primary": "#735c00",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2f3131",
+                        "on-secondary-fixed-variant": "#474746",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#e2dfde",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "inverse-primary": "#ecc229",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#615e56",
+                        "background": "#f9f9f9",
+                        "surface-container-highest": "#e2e2e2",
+                        "tertiary-container": "#b2aea5",
+                        "on-secondary-fixed": "#1b1b1b",
+                        "on-tertiary": "#ffffff",
+                        "surface-bright": "#f9f9f9",
+                        "on-tertiary-fixed": "#1d1c15",
+                        "on-secondary-container": "#636262",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#dadada",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#ecc229",
+                        "surface-container-low": "#f3f3f4",
+                        "outline-variant": "#d0c6ad",
+                        "on-primary-fixed": "#231b00",
+                        "tertiary-fixed-dim": "#cbc6bc",
+                        "primary-fixed": "#ffe084",
+                        "tertiary-fixed": "#e7e2d8",
+                        "on-surface": "#1a1c1c",
+                        "on-surface-variant": "#4d4633",
+                        "surface-tint": "#735c00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "gutter": "32px",
+                        "unit": "8px",
+                        "offset-overlap": "-48px",
+                        "margin": "64px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Epilogue", "sans-serif"],
+                        "headline-lg": ["Noto Serif", "serif"],
+                        "headline-md": ["Noto Serif", "serif"],
+                        "body-lg": ["Epilogue", "sans-serif"],
+                        "label-caps": ["Epilogue", "sans-serif"],
+                        "display-xl": ["Noto Serif", "serif"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                        "display-xl": ["80px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<!-- CUSTOM OVERRIDE STYLES -->
+<style>
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .gallery-frame { padding: 64px; }
+        .overlap-offset-content { margin-top: -48px; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md">
+<!-- PRIMARY NAVIGATION BAR -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-zinc-200/20 flex justify-between items-center w-full px-16 py-6 mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-zinc-900 dark:text-zinc-50 font-['Noto_Serif']">RENAISSANCE</div>
+<div class="hidden md:flex items-center space-x-12">
+<a class="text-zinc-500 hover:text-zinc-900 transition-colors font-['Noto_Serif']" href="index.html">The Hotel</a>
+<a class="text-zinc-500 hover:text-zinc-900 transition-colors font-['Noto_Serif']" href="booking.html">Rooms</a>
+<a class="text-zinc-500 hover:text-zinc-900 transition-colors font-['Noto_Serif']" href="index.html#experiences">Experiences</a>
+<a class="text-[#D2AA00] font-medium border-b border-[#D2AA00] pb-1 font-['Noto_Serif']" href="about.html">About</a>
+<a class="text-zinc-500 hover:text-zinc-900 transition-colors font-['Noto_Serif']" href="contact.html">Contact</a>
+</div>
+<a class="px-8 py-3 bg-zinc-900 text-white font-label-caps text-xs tracking-widest uppercase hover:bg-[#D2AA00] transition-all scale-100 active:scale-95 duration-200 inline-block text-center" href="booking.html">
+            Book Now
+        </a>
+</nav>
+<main class="pt-24">
+<!-- Artistic Banner -->
+<section class="relative h-[819px] w-full overflow-hidden flex items-center px-16">
+<div class="absolute inset-0 z-0 scale-105">
+<img class="w-full h-full object-cover brightness-75" data-alt="A grand, high-ceilinged hotel lobby with architectural marble columns and warm ambient lighting. The style is classic European elegance meets modern minimalism, featuring gold accents and deep charcoal furniture. Soft sunlight filters through massive arched windows, creating a serene and sophisticated atmosphere consistent with the editorial gallery aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlBg9VfiVgYZP6s5p-bbKHFs8MUfSzaZ7Wa-eOPlSpJm4wFcyxH-usjqSO6aYTzD7PAlr0srwLjEj--wCzmZUXriAALeSz5Z6Us2SjYVgbmKyBs8THXflDvMkkv60XO_9WjsF5gV-x01m0g7ZmehYbdmSD7o2Hqtkqog0hSP0OsKQO1C62DMXFkUL76_m4Fe2ZAY89Bm02GWUXlUKKdQQe1TqkrlhyZSK4bUP8ktefcWXSbaeEQEbL3PVlLwHNU6ztxNHYg02qV7-V"/>
+</div>
+<div class="relative z-10 max-w-4xl">
+<p class="font-label-caps text-white mb-6 uppercase tracking-[0.3em]">The Curator's Story</p>
+<h1 class="font-display-xl text-white mb-8">A Gallery of Timeless Moments.</h1>
+<div class="w-24 h-1 bg-[#D2AA00]"></div>
+</div>
+</section>
+<!-- Storytelling Section: Block 1 -->
+<section class="gallery-frame py-32 grid grid-cols-12 gap-gutter items-center">
+<div class="col-span-12 md:col-span-7 relative">
+<img class="w-full aspect-[4/5] object-cover" data-alt="Close-up detail of artisanal craftsmanship in a luxury hotel suite, showing hand-stitched leather upholstery and polished mahogany wood. The lighting is moody and focused, highlighting the rich textures and premium materials. The composition follows the editorial lens with an asymmetrical balance and a focus on high-fidelity details in a neutral, sophisticated palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjxA-iy6EBXg2RKzxZCfsGRq4EQb5dphX7M7F93rrkHTumsBLCdYBMkP7o4rPfrtepcFJcr4BM2gbFGKgQi3k1rbEoD9aJD9Lb4Sm9FSx5p6vEp3Bdbec52rFLkY6YJshhU8JOxFv8R36cAlBQjY9IgTG9FSa1Y7m5seJqOqJXxpJQolrB3Vvc25f10QJtm3ltxytk_mqdYC22CLDNOwZ-v0jJ4eKoBxSbKthTOx7ftwlJlH_ZWKNjMrMV4TVm1zPnLmDkDrn0rwpT"/>
+<div class="absolute -bottom-12 -right-12 w-64 h-80 bg-surface-container hidden md:block -z-10"></div>
+</div>
+<div class="col-span-12 md:col-span-5 md:pl-16">
+<span class="font-label-caps text-primary mb-4 block">EST. 1924</span>
+<h2 class="font-headline-lg mb-8">Heritage in Every Thread</h2>
+<p class="font-body-lg text-on-surface-variant mb-6">
+                    Founded in the heart of a city alive with artistic revolution, Renaissance was never intended to be a mere dwelling. It was conceived as a living museum, a space where the avant-garde met the classical.
+                </p>
+<p class="font-body-md text-secondary">
+                    Our walls have hosted poets, painters, and visionaries. Today, we continue that legacy by curating every aspect of your stay with the same intentionality as an art exhibition.
+                </p>
+</div>
+</section>
+<!-- Storytelling Section: Block 2 (Reversed) -->
+<section class="gallery-frame py-32 grid grid-cols-12 gap-gutter items-center bg-surface-container-low">
+<div class="col-span-12 md:col-span-5 md:pr-16 order-2 md:order-1">
+<span class="font-label-caps text-primary mb-4 block">CULTIVATED DESIGN</span>
+<h2 class="font-headline-lg mb-8">The Modern Muse</h2>
+<p class="font-body-lg text-on-surface-variant mb-6">
+                    Evolution is the only constant. While our bones are historic, our soul is contemporary. We blend the architectural grandeur of the past with the minimalist precision of today.
+                </p>
+<button onclick="window.location.href='booking.html'" class="mt-8 border border-outline px-10 py-4 font-label-caps hover:bg-zinc-900 hover:text-white transition-all duration-300 relative z-10 cursor-pointer">
+                    Discover Our Design
+                </button>
+</div>
+<div class="col-span-12 md:col-span-7 relative order-1 md:order-2">
+<img class="w-full aspect-[4/5] object-cover" data-alt="A minimalist hotel room interior featuring a sculptural chair and an oversized contemporary painting on an off-white wall. The floor is light oak, and the scene is bathed in soft, natural morning light. The aesthetic is high-contrast editorial, emphasizing generous whitespace and a three-dimensional layered feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9FKnVp9wlaWxwPECDh5ZAep4dR6TgsXdDisxSHm0JDvFOy_AuoG2S9UEdhlCLEOjobI7pyBPjmslZ8uL4tLXe72q840gExLY8OThdmZ-G1HMeZ8zm4uAyNKSsKRfCrlYE7gQr-VyFycuSqBB-SOkBfRAzh8lPkfD9V3Eihz14eN6-llmSBUM4aMJtCFFXo9TpLff9vVKk4UWjktsYUqRIkMyX8sWT1rwKwWZOJpbFIIjpP3IXxnthIdp1luClxwMhTF-nO_JgL2HX"/>
+</div>
+</section>
+<!-- Values Section -->
+<section class="gallery-frame py-40 bg-zinc-900 text-white">
+<div class="max-w-[1440px] mx-auto">
+<div class="mb-32">
+<h3 class="font-label-caps text-[#D2AA00] mb-4">OUR PHILOSOPHY</h3>
+<div class="h-px bg-white/10 w-full"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-24">
+<div class="group">
+<h4 class="font-display-xl opacity-30 group-hover:opacity-100 group-hover:text-[#D2AA00] transition-all duration-500 mb-8">Artistry.</h4>
+<p class="font-body-lg text-zinc-400">Everything we touch is a medium for expression. From the culinary arts to the curation of your room’s library.</p>
+</div>
+<div class="group md:mt-24">
+<h4 class="font-display-xl opacity-30 group-hover:opacity-100 group-hover:text-[#D2AA00] transition-all duration-500 mb-8">Elegance.</h4>
+<p class="font-body-lg text-zinc-400">Quiet luxury that doesn't need to shout. We value the subtle details that create a sense of profound calm.</p>
+</div>
+<div class="group md:mt-48">
+<h4 class="font-display-xl opacity-30 group-hover:opacity-100 group-hover:text-[#D2AA00] transition-all duration-500 mb-8">Intent.</h4>
+<p class="font-body-lg text-zinc-400">Every guest interaction is designed with purpose, ensuring a journey that is as seamless as it is inspiring.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Visual Timeline Section -->
+<section class="py-32 overflow-hidden bg-surface">
+<div class="px-16 mb-16 flex justify-between items-end">
+<div>
+<span class="font-label-caps text-primary mb-4 block">CHRONICLES</span>
+<h2 class="font-headline-lg">A Century of Moments</h2>
+</div>
+<div class="flex gap-4">
+<button onclick="document.getElementById('chronicles-scroll').scrollBy({left: -400, behavior: 'smooth'})" class="w-12 h-12 border border-outline flex items-center justify-center hover:bg-primary hover:text-white transition-colors relative z-10">
+<span class="material-symbols-outlined">west</span>
+</button>
+<button onclick="document.getElementById('chronicles-scroll').scrollBy({left: 400, behavior: 'smooth'})" class="w-12 h-12 border border-outline flex items-center justify-center hover:bg-primary hover:text-white transition-colors relative z-10">
+<span class="material-symbols-outlined">east</span>
+</button>
+</div>
+</div>
+<div id="chronicles-scroll" class="flex gap-12 px-16 overflow-x-auto hide-scrollbar pb-12 scroll-smooth">
+<!-- Timeline Item 1 -->
+<div class="flex-shrink-0 w-[450px]">
+<div class="relative mb-8">
+<img class="w-full aspect-[16/9] object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="A vintage 1920s black and white photograph of a stately hotel facade with classic motorcars parked in front. The image captures the historical grandeur of the hotel's founding era, with architectural details rendered in sharp, high-contrast monochrome tones, reflecting the brand's heritage." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmYYrepEtk_jtGmXTZAvF_HDr9NGzBtmP02IXSLFPqFLcpbI2IudPfe422JTEDwW8fZ0CU1dwT_GTNO8J3nu2U7WfrzhBRtwFrVcVWeVUjuObwz6gTPD3tgQumQeOXXfhYml_x6tTSSunTPbVNWnbqkFLpcEUJjO2A7SKqMsNvZCewi_e2muYEUdpIyzskbwcOTeiSO8WHz2oosR9FJzVdmpvODWvaIlWjTbCNdu4Nl_Qlcb33cH975HBqWvnK69f3MscR4PYwA6Ek"/>
+<div class="absolute -top-4 -left-4 bg-[#D2AA00] text-on-primary-container px-6 py-2 font-display-xl text-3xl">1924</div>
+</div>
+<h5 class="font-headline-md mb-4">The Foundation</h5>
+<p class="text-secondary font-body-md">The grand opening of Renaissance, originally serving as a private salon for the city's intellectual elite.</p>
+</div>
+<!-- Timeline Item 2 -->
+<div class="flex-shrink-0 w-[450px]">
+<div class="relative mb-8">
+<img class="w-full aspect-[16/9] object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="A mid-century modern hotel lounge scene with iconic designer furniture and large windows overlooking a manicured garden. The photograph uses warm sepia and muted tones, showcasing the hotel's transition into mid-20th-century luxury. The lighting is soft and golden, highlighting the textures of velvet and wood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnv38TrtYbO8oMc9EUdjh53F7aZyH-KSGhcxDnk2GKVnKrmYpckmDyGfv_0PwoUit1ROhhuEgWGGsXM2l0h0EP8mzTFjAJRfme4rBSwyOWZ07Vc5oIo02OWdTmZ8j1qCNisiZi_CYZsKokXXuKUQYC0w1-UzIFO9o746EoXZ_XiR1JdFVUW0mBPNdub0PNuodZZ3JLog2bIha3fn30yiR2ejrRDUVaSt9zh9KDB3g7f_hh276ttd6lc10Fd0RQjh4HziBacvR5Wt6O"/>
+<div class="absolute -top-4 -left-4 bg-[#D2AA00] text-on-primary-container px-6 py-2 font-display-xl text-3xl">1958</div>
+</div>
+<h5 class="font-headline-md mb-4">Golden Era Revival</h5>
+<p class="text-secondary font-body-md">A comprehensive restoration that introduced the mid-century modern elements still celebrated today.</p>
+</div>
+<!-- Timeline Item 3 -->
+<div class="flex-shrink-0 w-[450px]">
+<div class="relative mb-8">
+<img class="w-full aspect-[16/9] object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="A contemporary art installation within a sleek, modern hotel corridor featuring glowing neon and reflective surfaces. The image is bright and airy, representing the hotel's modern identity. The composition uses leading lines and clean geometric shapes to convey a sense of technological advancement and artistic forward-thinking." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBx5h6Obx-WbyBnYFiLvGq-GBpgXcxiQYvS3rym4PRrefNohn9xAJnrmgWOuGgi6aOb7xh8Cn-QLuE8BiC3TJXscje179DiLsO3li_aFJrwvyE4xxqqsbi9cyqzCM_bzxnbfqOppxTs2tIKsJTkdrMSapTGO4z6fKXHqoKGdYH59OzBdJu6wJnlkF9n-Z65wgKKYDnXN5pzqahFfQnL1EKkPwuTjZmaTrbGQwHiPKMoUrOqJsp52JeLZKPF9Qd_N81uNxk3rhby4Tuc"/>
+<div class="absolute -top-4 -left-4 bg-[#D2AA00] text-on-primary-container px-6 py-2 font-display-xl text-3xl">2024</div>
+</div>
+<h5 class="font-headline-md mb-4">The New Renaissance</h5>
+<p class="text-secondary font-body-md">Our centennial celebration marks the launch of the Global Gallery initiative, connecting guests with local artists.</p>
+</div>
+<!-- Timeline Item 4 -->
+<div class="flex-shrink-0 w-[450px]">
+<div class="relative mb-8">
+<img class="w-full aspect-[16/9] object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="A tranquil exterior evening shot of a luxury hotel garden with glowing paper lanterns and a reflective pool. The atmosphere is serene and magical, with a focus on harmony between nature and architecture. The lighting is low and intimate, creating a mood of sophisticated peace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU4VyMHSTnODVEjF0p0wfmwqdA3hUaMejg23AbEaYJ2cDzqP1irupxZRS4oUtrlBqFhDmbhzfypCDK7Nz8aPoOkINV-5czbWcaJC3n4Ay5HBKl7RCvdQslLX0XZWhWvt-KVY09dZM34wQhKqlXzQwQQ-7FnvqOGmFj-NuLojL8QeW1-9w8z-c31kRBXIe0IW407vp1AoCjSQpYgZY_FQZk0tu66Dvm3llZXbFERaBPkoda_mVTrlQ9L6WZRAvnKwAfFqkvccY9t_Dk"/>
+<div class="absolute -top-4 -left-4 bg-[#D2AA00] text-on-primary-container px-6 py-2 font-display-xl text-3xl">Future</div>
+</div>
+<h5 class="font-headline-md mb-4">Sustainability Unveiled</h5>
+<p class="text-secondary font-body-md">Pioneering the next century of hospitality with a focus on zero-impact luxury and architectural harmony.</p>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="gallery-frame py-32 flex flex-col items-center text-center">
+<h2 class="font-display-xl mb-12 max-w-2xl">Become part of our continuing history.</h2>
+<div class="flex gap-6">
+<a href="booking.html" class="px-12 py-5 bg-zinc-900 text-white font-label-caps tracking-widest hover:bg-[#D2AA00] transition-colors inline-block">Book Your Stay</a>
+<a href="booking.html" class="px-12 py-5 border border-outline font-label-caps tracking-widest hover:bg-zinc-50 transition-colors inline-block">View Rooms</a>
+</div>
+</section>
+</main>
+
+<!-- SITE FOOTER -->
+<footer class="bg-zinc-900 dark:bg-black full-width py-24 px-16">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-[1440px] mx-auto">
+<div>
+<span class="text-3xl font-black text-white mb-8 block font-['Noto_Serif'] tracking-tighter">RENAISSANCE</span>
+<p class="text-zinc-400 font-body-md max-w-sm mb-12 opacity-70">
+                    A destination for those who seek beauty in the unexpected and luxury in the essential.
+                </p>
+<div class="flex gap-8">
+<a class="text-zinc-400 hover:text-[#D2AA00] transition-colors duration-300" href="https://instagram.com" target="_blank">Instagram</a>
+<a class="text-zinc-400 hover:text-[#D2AA00] transition-colors duration-300" href="about.html">Journal</a>
+<a class="text-zinc-400 hover:text-[#D2AA00] transition-colors duration-300" href="booking.html">Gallery</a>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="flex flex-col gap-4">
+<span class="font-['Noto_Serif'] text-sm tracking-widest uppercase text-[#D2AA00] mb-4">Navigations</span>
+<a class="text-zinc-400 hover:text-white transition-colors" href="index.html">The Hotel</a>
+<a class="text-zinc-400 hover:text-white transition-colors" href="booking.html">Rooms</a>
+<a class="text-zinc-400 hover:text-white transition-colors" href="index.html#experiences">Experiences</a>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-['Noto_Serif'] text-sm tracking-widest uppercase text-[#D2AA00] mb-4">Legal</span>
+<a class="text-zinc-400 hover:text-white transition-colors" href="#privacy">Privacy Policy</a>
+<a class="text-zinc-400 hover:text-white transition-colors" href="#terms">Terms of Service</a>
+<a class="text-zinc-400 hover:text-white transition-colors" href="#press">Press Kit</a>
+<a class="text-zinc-400 hover:text-white transition-colors" href="#sustainability">Sustainability</a>
+</div>
+</div>
+</div>
+<div class="mt-24 pt-12 border-t border-zinc-800 w-full max-w-[1440px] mx-auto flex justify-between items-center">
+<span class="font-['Noto_Serif'] text-sm tracking-widest uppercase text-zinc-500 text-xs">© 2024 RENAISSANCE HOTEL. A CURATED GALLERY OF MOMENTS.</span>
+<div class="flex items-center gap-2 text-zinc-500 font-label-caps text-xs">
+                DESIGNED FOR THE CURIOUS
+                <span class="material-symbols-outlined text-xs">stat_0</span>
+</div>
+</div>
+</footer>
+</body></html>
