@@ -322,6 +322,7 @@
             const data = Object.fromEntries(formData.entries());
             data.message = "Subject: " + data.subject + "\n\n" + data.message;
             delete data.subject;
+            data.status = 'unread';
             data.created_at = new Date().toISOString();
             
             const { error } = await submitToSupabase('messages', data);
@@ -335,6 +336,8 @@
                 form.reset();
             }
         });
+
+    }); // end DOMContentLoaded
 
 </script>
 </body></html>

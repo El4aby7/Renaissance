@@ -287,7 +287,7 @@
     // --- OVERVIEW DATA ---
     async function fetchOverview() {
         const { count: bCount } = await window.supabaseClient.from('bookings').select('*', { count: 'exact', head: true });
-        const { count: mCount } = await window.supabaseClient.from('contact_messages').select('*', { count: 'exact', head: true });
+        const { count: mCount } = await window.supabaseClient.from('messages').select('*', { count: 'exact', head: true });
         const { count: pCount } = await window.supabaseClient.from('bookings').select('*', { count: 'exact', head: true }).eq('status', 'pending');
         
         document.getElementById('total-bookings').textContent = bCount || 0;
@@ -449,7 +449,7 @@
 
     // --- MESSAGES MANAGEMENT ---
     async function fetchMessages(filter) {
-        let query = window.supabaseClient.from('contact_messages').select('*').order('created_at', { ascending: false });
+        let query = window.supabaseClient.from('messages').select('*').order('created_at', { ascending: false });
         if (filter !== 'all') {
             query = query.eq('status', filter);
         }
@@ -466,8 +466,7 @@
             <div class="bg-white border border-zinc-200 p-6 ${m.status === 'unread' ? 'border-l-4 border-l-primary' : ''}">
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <h4 class="font-bold">${m.full_name} <span class="font-normal text-zinc-500">&lt;${m.email}&gt;</span></h4>
-                        <p class="text-sm font-semibold text-zinc-700">${m.subject}</p>
+                        <h4 class="font-bold">${m.name} <span class="font-normal text-zinc-500">&lt;${m.email}&gt;</span></h4>
                     </div>
                     <div class="text-right">
                         <span class="text-xs text-zinc-500 block mb-2">${new Date(m.created_at).toLocaleString()}</span>
@@ -485,16 +484,33 @@
     function filterMessages(status) { fetchMessages(status); }
 
     async function markMessageRead(id) {
-        await window.supabaseClient.from('contact_messages').update({ status: 'read' }).eq('id', id);
+        const { error } = await window.supabaseClient
+            .from('messages')
+            .update({ status: 'read' })
+            .eq('id', id);
+        if (error) {
+            console.error('markMessageRead error:', error.message);
+            alert('Could not mark as read: ' + error.message);
+            return;
+        }
         fetchMessages('all');
+        fetchOverview();
     }
 
     // --- SETTINGS MANAGEMENT ---
     async function fetchSettings() {
         const { data } = await window.supabaseClient.from('settings').select('*');
         if (data) {
+            // Explicit mapping from DB key → element ID
+            const keyToId = {
+                'map_url':          'setting-map',
+                'social_instagram': 'setting-instagram',
+                'social_facebook':  'setting-facebook',
+                'social_linkedin':  'setting-linkedin',
+            };
             data.forEach(setting => {
-                const el = document.getElementById('setting-' + setting.key.replace('social_', ''));
+                const elId = keyToId[setting.key];
+                const el = elId ? document.getElementById(elId) : null;
                 if (el) el.value = setting.value;
             });
         }

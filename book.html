@@ -254,7 +254,7 @@
 
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
-        data.status = 'PENDING';
+        data.status = 'pending';
         data.confirmation_number = confirmationNumber;
         data.created_at = new Date().toISOString();
 
